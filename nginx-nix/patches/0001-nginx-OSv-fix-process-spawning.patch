@@ -1,0 +1,33 @@
+From 0b19a4133fb3afa580a9a8a822b13abfdc37b0e4 Mon Sep 17 00:00:00 2001
+From: Justin Cinkelj <justin.cinkelj@xlab.si>
+Date: Fri, 14 Jul 2017 10:07:53 +0200
+Subject: [PATCH] nginx: OSv fix process spawning
+
+Original author @myechuri,
+https://github.com/myechuri/osv-apps/tree/nginx-osv
+
+Justin only re-added fcntl(F_SETOWN) part - fcntl(F_SETOWN) is now stubbed OSv.
+
+Signed-off-by: Justin Cinkelj <justin.cinkelj@xlab.si>
+---
+ src/os/unix/ngx_process.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/src/os/unix/ngx_process.c b/src/os/unix/ngx_process.c
+index 24a63fb..1128045 100644
+--- a/src/os/unix/ngx_process.c
++++ b/src/os/unix/ngx_process.c
+@@ -183,7 +187,9 @@ ngx_spawn_process(ngx_cycle_t *cycle, ngx_spawn_proc_pt proc, void *data,
+     ngx_process_slot = s;
+ 
+ 
+-    pid = fork();
++    // OSv: Fake master process as worker.
++    // pid = fork();
++    pid = 0;
+ 
+     switch (pid) {
+ 
+-- 
+2.9.4
+
