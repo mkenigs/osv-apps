@@ -28,7 +28,7 @@ egrep mysql /etc/services > etc/services
 cp $BASEDIR/my.cnf etc/
 cd usr
 
-./scripts/mysql_install_db --force --basedir=./ --ldata=data
+perl ./scripts/mysql_install_db --force --basedir=./ --ldata=data
 cat <<EOF | eval './bin/mysqld  --bootstrap --skip-grant-tables --basedir=./ --datadir=data --max_allowed_packet=8M --net_buffer_length=16K'
 use mysql;
 set default_storage_engine=InnoDB;
